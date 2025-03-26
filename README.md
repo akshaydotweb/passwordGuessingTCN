@@ -56,3 +56,6 @@ Yogesh
 
 ## 10. singles.org
 ![singles.org](singles.org_analysis.png)
+
+# PGTCN Architecture
+![TCNArchitecture](TCNArchitecture.png) 
