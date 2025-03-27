@@ -21,41 +21,41 @@ Yogesh
 
 # **Analysis Graph**
 ## password length histograms
-![password length histograms](password_length_histograms.png)
+![password length histograms](./preProcessingTechnique02/assets/password_length_histograms.png)
 
 ## password category comparison
-![password category comparison](password_category_comparison.png)
+![password category comparison](./preProcessingTechnique02/assets/password_category_comparison.png)
 
 # Analysis on individual password datasets
 ## 1. 000webhost
-![000webhost_analysis](000webhost_analysis.png)
+![000webhost_analysis](./preProcessingTechnique02/assets/000webhost_analysis.png)
 
 ## 2. 10-million-password-list-top-1000000
-![10-million-password-list-top-1000000](10-million-password-list-top-1000000_analysis.png)
+![10-million-password-list-top-1000000](./preProcessingTechnique02/assets/10-million-password-list-top-1000000_analysis.png)
 
 ## 3. Ashley-Madison
-![Ashley-Madison](Ashley-Madison_analysis.png)
+![Ashley-Madison](./preProcessingTechnique02/assets/Ashley-Madison_analysis.png)
 
 ## 4. honeynet 
-![honeynet](honeynet_analysis.png)
+![honeynet](./preProcessingTechnique02/assets/honeynet_analysis.png)
 
 ## 5. hotmail 
-![hotmail](hotmail_analysis.png)
+![hotmail](./preProcessingTechnique02/assets/hotmail_analysis.png)
 
 ## 6. myspace
-![myspace](myspace_analysis.png)
+![myspace](./preProcessingTechnique02/assets/myspace_analysis.png)
 
 ## 7. NordVPN
-![NordVPN](NordVPN_analysis.png)
+![NordVPN](./preProcessingTechnique02/assets/NordVPN_analysis.png)
 
 ## 8. phpbb
 ![phpbb_analysis](phpbb_analysis.png)
 
 ## 9. rockyou
-![rockyou](rockyou_analysis.png)
+![rockyou](./preProcessingTechnique02/assets/rockyou_analysis.png)
 
 ## 10. singles.org
-![singles.org](singles.org_analysis.png)
+![singles.org](./preProcessingTechnique02/assets/singles.org_analysis.png)
 
 # PGTCN Architecture
-![TCNArchitecture](TCNArchitecture.png) 
+![TCNArchitecture](./preProcessingTechnique02/assets/TCNArchitecture.png) 
