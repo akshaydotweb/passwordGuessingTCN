@@ -1,7 +1,51 @@
 import os
 import numpy as np
-import refined_pcfg  
-import encode_4d  
+import refined_pcfg
+import encode_4d
+
+def process_password_datasets(dataset_paths, output_dir="processed_datasets", 
+                             clean=True, encode=True, segment=True):
+    # Create output directory if it doesn't exist
+    os.makedirs(output_dir, exist_ok=True)
+    
+    all_passwords = []
+    processed_datasets = {}
+    
+    # Process each dataset
+    for file_path in dataset_paths:
+        dataset_name = os.path.basename(file_path).split('.')[0]
+        print(f"\nProcessing dataset: {dataset_name}")
+        
+        # Load and clean passwords
+        passwords = load_and_clean_passwords(file_path)
+        processed_datasets[dataset_name] = passwords
+        
+        if clean:
+            # Save cleaned passwords
+            cleaned_path = os.path.join(output_dir, f"{dataset_name}_cleaned.txt")
+            save_cleaned_data(passwords, cleaned_path)
+            
+        # Add to combined dataset for dictionary building
+        all_passwords.extend(passwords)
+        
+        if encode:
+            # Encode passwords
+            encoded_path = os.path.join(output_dir, f"{dataset_name}_encoded.npy")
+            encode_4d.encode_passwords(
+                output_dir + f"/{dataset_name}_cleaned.txt" if clean else file_path, 
+                encoded_path
+            )
+    
+    # Build word dictionary from all passwords for segmentation
+    if segment:
+        word_dict = refined_pcfg.build_word_dictionary(all_passwords)
+        
+        # Segment each dataset
+        for dataset_name, passwords in processed_datasets.items():
+            segmented_path = os.path.join(output_dir, f"{dataset_name}_segmented.txt")
+            test_on_dataset(passwords, segmented_path, word_dict)
+    
+    return processed_datasets
 
 def load_and_clean_passwords(file_path):
     """Loads a password file, removes duplicates, and cleans text."""
@@ -25,38 +69,6 @@ def save_cleaned_data(passwords, output_file):
             f.write(p + '\n')
     print(f"Saved cleaned data to {output_file}")
 
-# Load and clean both datasets
-honeynet_cleaned = load_and_clean_passwords("honeynet.txt")
-myspace_cleaned = load_and_clean_passwords("myspace.txt")
-
-# Save cleaned versions
-save_cleaned_data(honeynet_cleaned, "honeynet_cleaned.txt")
-save_cleaned_data(myspace_cleaned, "myspace_cleaned.txt")
-
-
-#  **Encode cleaned passwords using 4D encoding**
-encode_4d.encode_passwords("honeynet_cleaned.txt", "honeynet_encoded.npy")
-encode_4d.encode_passwords("myspace_cleaned.txt", "myspace_encoded.npy")
-
-
-#  **Load encoded passwords**
-honeynet_encoded = np.load("honeynet_encoded.npy")
-myspace_encoded = np.load("myspace_encoded.npy")
-
-
-# Fix: Use CHAR_TYPES from encode_4d.py
-def decode_password(encoded_password):
-    """Decodes a 4D encoded password back to a text string."""
-    char_map = {v: k for k, v in encode_4d.CHAR_TYPES.items()}  # Fix applied
-    return ''.join(char_map.get((row, col), '') for row, col in encoded_password[:, :2])
-
-honeynet_decoded = ["".join(decode_password(p)) for p in honeynet_encoded]
-myspace_decoded = ["".join(decode_password(p)) for p in myspace_encoded]
-
-# **Build word dictionary from decoded passwords**
-all_passwords = honeynet_decoded + myspace_decoded
-word_dict = refined_pcfg.build_word_dictionary(all_passwords)  
-
 def test_on_dataset(passwords, output_path, word_dict):
     """Applies refined PCFG segmentation on passwords and saves output."""
     with open(output_path, "w", encoding="utf-8") as outfile:
@@ -66,9 +78,17 @@ def test_on_dataset(passwords, output_path, word_dict):
     
     print(f"Processed passwords → Output saved in {output_path}")
 
-# Apply refined PCFG segmentation on decoded passwords
-test_on_dataset(honeynet_decoded, "honeynet_segmented.txt", word_dict)
-test_on_dataset(myspace_decoded, "myspace_segmented.txt", word_dict)
+# Usage example
+if __name__ == "__main__":
+    # Define dataset paths
+    datasets = [
+        "../datasets/myspace.txt",
+        "../datasets/honeynet.txt", 
+        "../datasets/example.txt"
+    ]
+    
+    # Process all datasets
+    processed_data = process_password_datasets(datasets)
 
 
 
