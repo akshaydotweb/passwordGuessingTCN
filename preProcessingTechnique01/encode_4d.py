@@ -21,17 +21,26 @@ ROW_COL_MAP = {char: (row_idx + 1, col_idx + 1)
                for row_idx, row in enumerate(QWERTY_LAYOUT)
                for col_idx, char in enumerate(row)}
 
-def encode_password(password, max_length=16):
+MAX_PASSWORD_LENGTH = 16
+ORIGINAL_VECTOR_DIMS = (16, 4)
 
-    encoded = np.zeros((max_length, 4), dtype=np.float32)
+def encode_password(password):
+    output_vectors = []
+    for char in password:
+        char_vector = np.zeros((16, 4), dtype=int)  # Create the (16, 4) block
+        type_val, index_val = CHAR_TYPES.get(char, (0, 0))
+        # Placeholder: Put type/index in the first row
+        char_vector[0, 0] = type_val
+        char_vector[0, 1] = index_val
+        output_vectors.append(char_vector)
 
-    for i, char in enumerate(password[:max_length]):  # Truncate long passwords
-        char_type, serial = CHAR_TYPES.get(char, (4, 0))  # Default: special char
-        row, col = ROW_COL_MAP.get(char, (0, 0))  # Default to (0,0) if unknown
+    # Pad sequence with zero vectors if needed...
+    num_vectors = len(output_vectors)
+    if num_vectors < MAX_PASSWORD_LENGTH:  # Assuming MAX_PASSWORD_LENGTH exists
+        padding = [np.zeros(ORIGINAL_VECTOR_DIMS, dtype=int)] * (MAX_PASSWORD_LENGTH - num_vectors)
+        output_vectors.extend(padding)
 
-        encoded[i] = [char_type, serial, row, col]
-
-    return encoded
+    return np.array(output_vectors[:MAX_PASSWORD_LENGTH])  # Returns shape (max_length, 16, 4)
 
 def encode_passwords(file_path, output_file):
     """
@@ -73,7 +82,7 @@ def decode_password(encoded):
         if np.all(char_vec == 0):  # End of password
             break
             
-        char_type, serial = int(char_vec[0]), int(char_vec[1])
+        char_type, serial = int(char_vec[0, 0]), int(char_vec[0, 1])
         if (char_type, serial) in reverse_map:
             decoded.append(reverse_map[(char_type, serial)])
         else:

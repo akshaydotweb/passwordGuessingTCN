@@ -56,4 +56,3 @@ def build_tcn_model(input_shape, output_shape, filters=64, kernel_size=3,
     # Create model
     model = Model(inputs=inputs, outputs=outputs)
     return model
-

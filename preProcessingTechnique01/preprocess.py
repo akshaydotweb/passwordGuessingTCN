@@ -84,7 +84,15 @@ if __name__ == "__main__":
     datasets = [
         "../datasets/myspace.txt",
         "../datasets/honeynet.txt", 
-        "../datasets/example.txt"
+        "../datasets/example.txt",
+        '../datasets/rockyou.txt',
+        '../datasets/singles.org.txt',
+        '../datasets/000webhost.txt',
+        '../datasets/10-million-passwords.txt',
+        '../datasets/Ashley-Madison.txt',
+        '../datasets/hotmail.txt',
+        '../datasets/NordVPN.txt',
+        '../datasets/phpbb.txt'
     ]
     
     # Process all datasets

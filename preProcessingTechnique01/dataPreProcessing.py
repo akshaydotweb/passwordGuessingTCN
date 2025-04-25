@@ -576,9 +576,17 @@ def main():
     # Define maximum password length and datasets
     max_length = 16
     datasets = [
-        '../datasets/myspace.txt',
-        '../datasets/phpbb.txt',
-        '../datasets/honeynet.txt',
+        "../datasets/myspace.txt",
+        "../datasets/honeynet.txt", 
+        "../datasets/example.txt",
+        '../datasets/rockyou.txt',
+        '../datasets/singles.org.txt',
+        '../datasets/000webhost.txt',
+        '../datasets/10-million-passwords.txt',
+        '../datasets/Ashley-Madison.txt',
+        '../datasets/hotmail.txt',
+        '../datasets/NordVPN.txt',
+        '../datasets/phpbb.txt'
     ]
     
     # Process datasets
